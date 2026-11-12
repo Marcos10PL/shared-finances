@@ -4,7 +4,7 @@ import { pl } from '@nuxt/ui/locale'
 useHead({
   titleTemplate: (title) => (title ? `${title} · Wspólne finanse` : 'Wspólne finanse'),
   meta: [{ name: 'viewport', content: 'width=device-width, initial-scale=1' }],
-  link: [{ rel: 'icon', type: 'image/png', href: '/favicon.png' }],
+  link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
   htmlAttrs: {
     lang: 'pl'
   }
@@ -17,8 +17,9 @@ useSeoMeta({
 
 <template>
   <UApp :locale="pl">
-    <UMain>
+    <NuxtLoadingIndicator />
+    <NuxtLayout>
       <NuxtPage />
-    </UMain>
+    </NuxtLayout>
   </UApp>
 </template>

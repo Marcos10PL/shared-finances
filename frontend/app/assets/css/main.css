@@ -2,4 +2,18 @@
 @import '@nuxt/ui';
 
 @theme static {
+  --font-sans: 'Geist', 'Public Sans', system-ui, sans-serif;
+  --font-brand: 'Outfit', system-ui, sans-serif;
+
+  --color-income: var(--color-emerald-700);
+  --color-expense: var(--color-rose-600);
+}
+
+:root {
+  --ui-radius: 0.25rem;
+}
+
+.dark {
+  --color-income: var(--color-emerald-400);
+  --color-expense: var(--color-rose-400);
 }
