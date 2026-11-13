@@ -2,30 +2,51 @@
 const {
   description = undefined,
   confirmLabel = 'Usuń',
-  color = 'error'
+  color = 'error',
+  onConfirm
 } = defineProps<{
   title: string
   description?: string
   confirmLabel?: string
   color?: 'error' | 'primary'
+  onConfirm: () => Promise<void>
 }>()
 
 const emit = defineEmits<{
-  close: [confirmed: boolean]
+  close: []
 }>()
+
+const loading = ref(false)
+
+const onSubmit = async () => {
+  loading.value = true
+
+  try {
+    await onConfirm()
+  } finally {
+    emit('close')
+  }
+}
 </script>
 
 <template>
   <UModal
     :title
     :description
-    :close="{ onClick: () => emit('close', false) }"
-    @update:open="(open) => !open && emit('close', false)"
+    :dismissible="!loading"
+    :close="loading ? false : { onClick: () => emit('close') }"
+    @update:open="(open) => !open && !loading && emit('close')"
   >
     <template #footer>
       <div class="flex w-full justify-end gap-2">
-        <UButton color="neutral" variant="outline" label="Anuluj" @click="emit('close', false)" />
-        <UButton :color :label="confirmLabel" @click="emit('close', true)" />
+        <UButton
+          color="neutral"
+          variant="outline"
+          label="Anuluj"
+          :disabled="loading"
+          @click="emit('close')"
+        />
+        <UButton :color :label="confirmLabel" :loading @click="onSubmit" />
       </div>
     </template>
   </UModal>

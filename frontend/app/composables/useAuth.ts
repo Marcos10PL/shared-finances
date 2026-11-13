@@ -13,7 +13,6 @@ export const getAuthErrorCode = (error: unknown) => (error as { code?: AuthError
 
 const authError = (code: AuthErrorCode) => Object.assign(new Error(code), { code })
 
-// Simulates the network delay of the mocked API
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 const MOCK_USER_ID = 'u-5'

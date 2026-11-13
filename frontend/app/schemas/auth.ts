@@ -1,6 +1,6 @@
 import * as z from 'zod'
 
-const emailSchema = z
+export const emailSchema = z
   .string()
   .trim()
   .max(VALIDATION.EMAIL_MAX_LENGTH, `Maksymalna długość adresu: ${VALIDATION.EMAIL_MAX_LENGTH}.`)

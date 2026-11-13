@@ -28,14 +28,53 @@ export default defineAppConfig({
         }
       ]
     },
+    dropdownMenu: {
+      slots: {
+        item: 'cursor-pointer'
+      }
+    },
+    select: {
+      slots: {
+        item: 'cursor-pointer'
+      }
+    },
     card: {
       slots: {
-        root: 'rounded-lg'
+        root: 'rounded-lg',
+        header: 'p-4 sm:px-5',
+        body: 'p-5 sm:p-5',
+        footer: 'p-4 sm:px-5'
       },
       variants: {
         variant: {
           interactive: {
             root: 'relative cursor-pointer bg-default ring ring-default divide-y divide-default transition-shadow hover:shadow-(--card-hover-shadow) hover:ring-(--card-hover-ring)'
+          },
+          settings: {
+            root: 'bg-default ring ring-default divide-y divide-default',
+            footer: 'flex items-center justify-end gap-2 bg-muted py-3.5'
+          },
+          danger: {
+            root: 'bg-default ring ring-error/40 divide-y divide-default'
+          },
+          flush: {
+            root: 'bg-default ring ring-default divide-y divide-default',
+            body: 'p-0 sm:p-0'
+          }
+        }
+      }
+    },
+    badge: {
+      compoundVariants: [
+        { size: ['sm', 'md'], class: 'rounded-full px-2.5 py-0.5' },
+        { size: 'sm', class: 'text-[0.7rem]' }
+      ]
+    },
+    formField: {
+      variants: {
+        required: {
+          true: {
+            label: 'after:ms-1'
           }
         }
       }
@@ -94,6 +133,21 @@ export default defineAppConfig({
         }
       },
       compoundVariants: [{ active: false, disabled: false, class: 'hover:text-(--primary-hover)' }]
+    },
+    breadcrumb: {
+      slots: {
+        link: 'text-base'
+      },
+      compoundVariants: [{ active: true, class: { link: 'text-highlighted' } }]
+    },
+    avatar: {
+      slots: {
+        fallback: 'font-semibold'
+      },
+      compoundVariants: [
+        { size: 'xs', class: { fallback: 'text-[0.625rem]' } },
+        { size: 'md', class: { fallback: 'text-xs' } }
+      ]
     },
     user: {
       slots: {

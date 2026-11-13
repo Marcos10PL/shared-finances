@@ -1,13 +1,12 @@
 <script setup lang="ts">
-const { wallets } = useWallets()
-const route = useRoute()
+const wallet = useCurrentWallet()
 
-const wallet = computed(() => wallets.value.find((item) => item.id === route.params.id))
 const title = computed(() => wallet.value?.name ?? 'Portfel')
+const breadcrumb = computed(() => [{ label: 'Portfele', to: ROUTES.HOME }, { label: title.value }])
 
 useHead({ title })
 </script>
 
 <template>
-  <PagePlaceholder :title />
+  <PagePlaceholder :title :breadcrumb />
 </template>

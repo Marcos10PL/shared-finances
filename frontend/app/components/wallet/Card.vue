@@ -10,41 +10,24 @@ const { leaveWallet } = useWallets()
 const { showSuccess, showError } = useToasts()
 const { confirm } = useModals()
 
-const limit = computed(() => getLimitStatus(wallet))
-
 const isOwner = computed(() => wallet.role === WALLET_ROLES.OWNER)
 
-const LIMIT_STYLES = {
-  [LIMIT_STATES.NONE]: { bar: 'primary', label: '' },
-  [LIMIT_STATES.OK]: { bar: 'primary', label: 'text-muted' },
-  [LIMIT_STATES.WARNING]: { bar: 'warning', label: 'text-warning' },
-  [LIMIT_STATES.OVER]: { bar: 'error', label: 'text-error' }
-} as const
-
-const limitLabel = computed(() =>
-  limit.value.state === LIMIT_STATES.OVER
-    ? `Przekroczono o ${formatCurrency(limit.value.overBy)}`
-    : formatPercent(limit.value.percent)
-)
-
-const onLeave = async () => {
-  const confirmed = await confirm({
+const onLeave = () =>
+  confirm({
     title: `Opuścić portfel „${wallet.name}”?`,
     description:
       'Stracisz dostęp do jego transakcji i podsumowań. Właściciel będzie mógł zaprosić Cię ponownie.',
     confirmLabel: 'Opuść portfel',
-    color: 'primary'
+    color: 'primary',
+    onConfirm: async () => {
+      try {
+        await leaveWallet(wallet.id)
+        showSuccess('Opuszczono portfel.')
+      } catch {
+        showError('Nie udało się opuścić portfela.')
+      }
+    }
   })
-
-  if (!confirmed) return
-
-  try {
-    await leaveWallet(wallet.id)
-    showSuccess('Opuszczono portfel')
-  } catch {
-    showError('Nie udało się opuścić portfela')
-  }
-}
 </script>
 
 <template>
@@ -66,12 +49,7 @@ const onLeave = async () => {
         </NuxtLink>
       </div>
       <div>
-        <UBadge
-          :label="WALLET_ROLE_LABELS[wallet.role]"
-          :color="isOwner ? 'primary' : 'secondary'"
-          :variant="isOwner ? 'soft' : 'subtle'"
-          class="rounded-full px-2.5 py-0.5"
-        />
+        <WalletRoleBadge :role="wallet.role" />
       </div>
     </div>
 
@@ -82,49 +60,15 @@ const onLeave = async () => {
       </span>
     </div>
 
-    <div class="flex flex-col gap-1.5">
-      <div class="flex justify-between gap-2 text-xs">
-        <span class="text-muted tabular-nums">
-          <template v-if="limit.state === LIMIT_STATES.NONE">Brak limitu</template>
-          <template v-else>
-            {{ formatCurrency(wallet.monthlyExpenses) }} z
-            {{ formatCurrency(wallet.monthlyLimit!) }}
-          </template>
-        </span>
-        <span
-          v-if="limit.state !== LIMIT_STATES.NONE"
-          class="font-medium"
-          :class="LIMIT_STYLES[limit.state].label"
-        >
-          {{ limitLabel }}
-        </span>
-      </div>
-
-      <div class="relative">
-        <UProgress
-          :model-value="Math.min(limit.percent, 100)"
-          :color="LIMIT_STYLES[limit.state].bar"
-          :ui="{ base: 'h-1.5 bg-elevated' }"
-        />
-        <span
-          v-if="limit.state !== LIMIT_STATES.NONE && wallet.warningThreshold !== null"
-          class="absolute -top-0.75 -bottom-0.75 w-0.5 rounded-xs bg-inverted"
-          :style="{ left: `${wallet.warningThreshold}%` }"
-        />
-      </div>
-    </div>
+    <WalletLimitBar :limit="wallet" />
 
     <template #footer>
       <UAvatarGroup :max="3" size="xs">
-        <UAvatar
+        <UiUserAvatar
           v-for="member in wallet.members"
           :key="member.id"
-          :text="getInitials(member.displayName)"
-          :alt="member.displayName"
-          :class="getChartColorById(member.id).bg"
-          :ui="{
-            fallback: `text-[0.625rem] font-semibold ${getChartColorById(member.id).initials}`
-          }"
+          :user-id="member.id"
+          :name="member.displayName"
         />
       </UAvatarGroup>
 

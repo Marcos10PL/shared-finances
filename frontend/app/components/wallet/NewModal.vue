@@ -17,10 +17,10 @@ async function onSubmit(event: FormSubmitEvent<WalletInput>) {
 
   try {
     await createWallet(event.data.name)
-    showSuccess('Utworzono portfel')
+    showSuccess('Utworzono portfel.')
     emit('close', true)
   } catch {
-    showError('Nie udało się utworzyć portfela')
+    showError('Nie udało się utworzyć portfela.')
     loading.value = false
   }
 }

@@ -1,7 +1,7 @@
-import type { LimitState, LimitStatus, Wallet } from '~/types'
+import type { LimitState, LimitStatus, WalletLimit } from '~/types'
 
-export const getLimitStatus = (wallet: Wallet): LimitStatus => {
-  const { monthlyLimit, monthlyExpenses, warningThreshold } = wallet
+export const getLimitStatus = (limit: WalletLimit): LimitStatus => {
+  const { monthlyLimit, monthlyExpenses, warningThreshold } = limit
 
   if (!monthlyLimit) return { state: LIMIT_STATES.NONE, percent: 0, overBy: 0 }
 

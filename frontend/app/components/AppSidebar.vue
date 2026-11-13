@@ -43,7 +43,6 @@ const items = computed<NavigationMenuItem[][]>(() => [
   ]
 ])
 
-// Computed once per change of the wallets, not once per slot render
 const walletColors = computed(
   () => new Map(wallets.value.map((wallet, index) => [wallet.id, getChartColor(index)]))
 )
@@ -107,15 +106,13 @@ const onLogout = async () => {
           v-if="user && !collapsed"
           :name="user.displayName"
           :description="user.email"
-          :avatar="{
-            text: getInitials(user.displayName),
-            size: 'md',
-            class: getChartColorById(user.id).bg,
-            ui: { fallback: `text-xs font-semibold ${getChartColorById(user.id).initials}` }
-          }"
           :ui="{ name: 'text-sm font-medium text-highlighted', description: 'text-xs text-muted' }"
           class="px-2 py-1.5"
-        />
+        >
+          <template #avatar>
+            <UiUserAvatar :user-id="user.id" :name="user.displayName" />
+          </template>
+        </UUser>
 
         <div class="flex gap-1" :class="collapsed ? 'flex-col items-start' : 'items-center'">
           <UButton
