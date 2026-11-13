@@ -32,7 +32,7 @@ async function onSubmit(event: FormSubmitEvent<LoginInput>) {
   <AuthCard title="Zaloguj się">
     <template #subtitle>
       Nie masz konta?
-      <ULink :to="ROUTES.REGISTER" class="font-medium text-primary">Załóż konto</ULink>
+      <ULink :to="ROUTES.REGISTER"> Załóż konto </ULink>
     </template>
 
     <UAlert

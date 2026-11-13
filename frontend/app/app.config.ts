@@ -14,12 +14,96 @@ export default defineAppConfig({
       },
       defaultVariants: {
         size: 'md'
-      }
+      },
+      compoundVariants: [
+        {
+          color: 'primary',
+          variant: 'solid',
+          class: 'hover:bg-(--primary-hover) active:bg-(--primary-hover)'
+        },
+        {
+          color: 'neutral',
+          variant: ['ghost', 'outline'],
+          class: 'hover:bg-(--hover-bg) active:bg-(--hover-bg)'
+        }
+      ]
     },
     card: {
       slots: {
         root: 'rounded-lg'
+      },
+      variants: {
+        variant: {
+          interactive: {
+            root: 'relative cursor-pointer bg-default ring ring-default divide-y divide-default transition-shadow hover:shadow-(--card-hover-shadow) hover:ring-(--card-hover-ring)'
+          }
+        }
       }
+    },
+    dashboardPanel: {
+      slots: {
+        root: 'bg-canvas'
+      }
+    },
+    dashboardSidebar: {
+      slots: {
+        root: 'sidebar-hover overflow-hidden bg-sidebar transition-[width] duration-200 ease-out motion-reduce:transition-none',
+        body: 'gap-5 px-3.5 py-4',
+        footer: 'px-3.5 py-3'
+      }
+    },
+    dashboardNavbar: {
+      slots: {
+        root: 'bg-default/70'
+      }
+    },
+    navigationMenu: {
+      slots: {
+        root: 'gap-5',
+        list: 'flex flex-col gap-0.5',
+        separator: 'hidden',
+        label: 'px-2.5 pb-1.5 font-medium text-muted',
+        link: 'cursor-pointer gap-2.5',
+        linkLeadingIcon: 'size-4.5'
+      },
+      compoundVariants: [
+        { orientation: 'vertical', class: { link: 'min-h-9 px-2.25 before:inset-y-0' } },
+        {
+          orientation: 'vertical',
+          active: false,
+          class: {
+            link: 'text-default hover:text-highlighted hover:before:bg-(--hover-bg)',
+            linkLeadingIcon: 'text-muted'
+          }
+        },
+        {
+          orientation: 'vertical',
+          active: true,
+          class: {
+            link: 'text-highlighted before:bg-(--sidebar-active-bg) before:shadow-(--sidebar-active-shadow) before:ring-1 before:ring-(--sidebar-active-ring)',
+            linkLeadingIcon: 'text-(--sidebar-active-icon)'
+          }
+        }
+      ]
+    },
+    link: {
+      base: 'font-medium',
+      variants: {
+        active: {
+          false: 'text-primary'
+        }
+      },
+      compoundVariants: [{ active: false, disabled: false, class: 'hover:text-(--primary-hover)' }]
+    },
+    user: {
+      slots: {
+        wrapper: 'min-w-0',
+        name: 'truncate',
+        description: 'truncate'
+      }
+    },
+    skeleton: {
+      base: 'rounded-lg bg-accented dark:bg-elevated'
     }
   }
 })

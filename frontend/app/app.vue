@@ -17,8 +17,8 @@ useSeoMeta({
 
 <template>
   <UApp :locale="pl">
-    <NuxtLoadingIndicator />
     <NuxtLayout>
+      <NuxtLoadingIndicator />
       <NuxtPage />
     </NuxtLayout>
   </UApp>

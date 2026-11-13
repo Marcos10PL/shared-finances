@@ -41,7 +41,7 @@ async function onSubmit(event: FormSubmitEvent<RegisterInput>) {
   <AuthCard title="Załóż konto">
     <template #subtitle>
       Masz już konto?
-      <ULink :to="ROUTES.LOGIN" class="font-medium text-primary">Zaloguj się</ULink>
+      <ULink :to="ROUTES.LOGIN"> Zaloguj się </ULink>
     </template>
 
     <UAlert
