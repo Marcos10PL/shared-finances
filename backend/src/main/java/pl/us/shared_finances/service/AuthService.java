@@ -59,7 +59,7 @@ public class AuthService {
     public UserResponse getCurrentUser(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.UNAUTHORIZED, "Użytkownik nie istnieje"));
+                        HttpStatus.UNAUTHORIZED, "USER_NOT_FOUND"));
 
         return toUserResponse(user);
     }

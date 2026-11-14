@@ -6,7 +6,9 @@ watch(
   () => user.value?.id,
   (id) => {
     reset()
+
     if (id) fetchWallets()
+    else navigateTo(ROUTES.LOGIN)
   },
   { immediate: true }
 )

@@ -29,7 +29,7 @@ const items = computed<NavigationMenuItem[][]>(() => [
     { label: 'Portfele', type: 'label' },
     ...wallets.value.map((wallet) => ({
       label: wallet.name,
-      value: wallet.id,
+      value: String(wallet.id),
       to: ROUTES.WALLET(wallet.id),
       slot: 'wallet' as const,
       ui: { link: 'wallet-link' }
@@ -44,7 +44,7 @@ const items = computed<NavigationMenuItem[][]>(() => [
 ])
 
 const walletColors = computed(
-  () => new Map(wallets.value.map((wallet, index) => [wallet.id, getChartColor(index)]))
+  () => new Map(wallets.value.map((wallet, index) => [String(wallet.id), getChartColor(index)]))
 )
 const getWalletColor = (item: NavigationMenuItem) => walletColors.value.get(item.value!)!
 

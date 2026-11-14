@@ -35,7 +35,7 @@ public class WalletService {
     @Transactional
     public WalletResponse create(Long userId, WalletRequest request) {
         User owner = userRepository.findById(userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Użytkownik nie istnieje"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "USER_NOT_FOUND"));
 
         return createWallet(owner, request.name());
     }

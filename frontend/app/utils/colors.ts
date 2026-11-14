@@ -8,7 +8,4 @@ const CHART_COLORS = [
 
 export const getChartColor = (index: number) => CHART_COLORS[index % CHART_COLORS.length]!
 
-export const getChartColorById = (id: string) => {
-  const hash = [...id].reduce((sum, char) => sum + char.charCodeAt(0), 0)
-  return getChartColor(hash)
-}
+export const getChartColorById = (id: number) => getChartColor(id)

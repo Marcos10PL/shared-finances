@@ -42,9 +42,10 @@ async function onInvite(event: FormSubmitEvent<InviteInput>) {
     state.email = ''
     showSuccess('Wysłano zaproszenie.')
   } catch (error) {
-    const code = getInviteErrorCode(error)
+    const code = getApiErrorCode(error)
+    const message = code && INVITE_ERROR_MESSAGES[code]
 
-    if (code) form.value?.setErrors([{ name: 'email', message: INVITE_ERROR_MESSAGES[code] }])
+    if (message) form.value?.setErrors([{ name: 'email', message }])
     else showError('Nie udało się wysłać zaproszenia.')
   } finally {
     inviting.value = false

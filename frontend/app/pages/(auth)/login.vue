@@ -20,7 +20,7 @@ async function onSubmit(event: FormSubmitEvent<LoginInput>) {
     await navigateTo(ROUTES.HOME)
   } catch (error) {
     errorMessage.value =
-      getAuthErrorCode(error) === 'INVALID_CREDENTIALS'
+      getApiErrorCode(error) === ERROR_CODES.INVALID_CREDENTIALS
         ? 'Nieprawidłowy adres e-mail lub hasło.'
         : 'Nie udało się zalogować. Spróbuj ponownie.'
     loading.value = false

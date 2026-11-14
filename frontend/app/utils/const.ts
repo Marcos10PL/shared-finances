@@ -1,18 +1,19 @@
+import type { ErrorCode } from '~/types'
+
 export const ROUTES = {
   HOME: '/',
   LOGIN: '/login',
   REGISTER: '/register',
   INVITATIONS: '/invitations',
   CATEGORIES: '/categories',
-  WALLET: (id: string) => `/wallets/${id}`,
-  WALLET_SETTINGS: (id: string) => `/wallets/${id}/settings`
+  WALLET: (id: number) => `/wallets/${id}`,
+  WALLET_SETTINGS: (id: number) => `/wallets/${id}/settings`
 } as const
 
-// TODO: BACKEND CONFIRM
 export const WALLET_ROLES = {
-  OWNER: 'owner',
-  MEMBER: 'member',
-  GUEST: 'guest'
+  OWNER: 'OWNER',
+  MEMBER: 'MEMBER',
+  GUEST: 'GUEST'
 } as const
 
 export const ASSIGNABLE_ROLES = [WALLET_ROLES.MEMBER, WALLET_ROLES.GUEST] as const
@@ -24,19 +25,31 @@ export const LIMIT_STATES = {
   OVER: 'over'
 } as const
 
-export const INVITE_ERRORS = {
+export const ERROR_CODES = {
+  // auth
+  EMAIL_TAKEN: 'EMAIL_TAKEN',
+  INVALID_CREDENTIALS: 'INVALID_CREDENTIALS',
+  USER_NOT_FOUND: 'USER_NOT_FOUND',
+
+  // wallets
+  WALLET_NOT_FOUND: 'WALLET_NOT_FOUND',
+  NOT_OWNER: 'NOT_OWNER',
+  GUEST_READ_ONLY: 'GUEST_READ_ONLY',
+
+  // TODO: BACKEND CONFIRM
+  // invitations
   NO_ACCOUNT: 'NO_ACCOUNT',
   ALREADY_MEMBER: 'ALREADY_MEMBER',
   ALREADY_INVITED: 'ALREADY_INVITED',
   SELF: 'SELF'
 } as const
 
-export const INVITE_ERROR_MESSAGES = {
-  [INVITE_ERRORS.NO_ACCOUNT]: 'Nie znaleziono konta z tym adresem e-mail.',
-  [INVITE_ERRORS.ALREADY_MEMBER]: 'Ta osoba jest już w tym portfelu.',
-  [INVITE_ERRORS.ALREADY_INVITED]: 'Ta osoba ma już oczekujące zaproszenie.',
-  [INVITE_ERRORS.SELF]: 'Nie możesz zaprosić samego siebie.'
-} as const
+export const INVITE_ERROR_MESSAGES: Partial<Record<ErrorCode, string>> = {
+  [ERROR_CODES.NO_ACCOUNT]: 'Nie znaleziono konta z tym adresem e-mail.',
+  [ERROR_CODES.ALREADY_MEMBER]: 'Ta osoba jest już w tym portfelu.',
+  [ERROR_CODES.ALREADY_INVITED]: 'Ta osoba ma już oczekujące zaproszenie.',
+  [ERROR_CODES.SELF]: 'Nie możesz zaprosić samego siebie.'
+}
 
 export const WALLET_ROLE_LABELS = {
   [WALLET_ROLES.OWNER]: 'Właściciel',

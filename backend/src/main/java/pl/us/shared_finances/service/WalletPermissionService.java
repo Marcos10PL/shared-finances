@@ -16,14 +16,14 @@ public class WalletPermissionService {
 
     public Membership requireMember(Long walletId, Long userId) {
         return membershipRepository.findByWalletIdAndUserId(walletId, userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Portfel nie istnieje"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "WALLET_NOT_FOUND"));
     }
 
     public Membership requireEditor(Long walletId, Long userId) {
         Membership membership = requireMember(walletId, userId);
 
         if (membership.getRole() == WalletRole.GUEST) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Gość ma dostęp tylko do odczytu");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "GUEST_READ_ONLY");
         }
         return membership;
     }
@@ -32,7 +32,7 @@ public class WalletPermissionService {
         Membership membership = requireMember(walletId, userId);
 
         if (membership.getRole() != WalletRole.OWNER) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Tylko właściciel może wykonać tę operację");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "NOT_OWNER");
         }
         return membership;
     }

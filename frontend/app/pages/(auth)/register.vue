@@ -25,7 +25,7 @@ async function onSubmit(event: FormSubmitEvent<RegisterInput>) {
     await register(event.data)
     await navigateTo(ROUTES.HOME)
   } catch (error) {
-    if (getAuthErrorCode(error) === 'EMAIL_TAKEN') {
+    if (getApiErrorCode(error) === ERROR_CODES.EMAIL_TAKEN) {
       form.value?.setErrors([
         { name: 'email', message: 'Konto z tym adresem e-mail już istnieje.' }
       ])

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { userId, name } = defineProps<{
-  userId: string
+  userId: number
   name: string
 }>()
 

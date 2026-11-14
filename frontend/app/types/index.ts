@@ -1,28 +1,29 @@
-import type { LIMIT_STATES, WALLET_ROLES } from '~/utils/const'
+import type { ERROR_CODES, LIMIT_STATES, WALLET_ROLES } from '~/utils/const'
 
 export type WalletRole = (typeof WALLET_ROLES)[keyof typeof WALLET_ROLES]
 export type LimitState = (typeof LIMIT_STATES)[keyof typeof LIMIT_STATES]
 export type AssignableRole = typeof WALLET_ROLES.MEMBER | typeof WALLET_ROLES.GUEST
+export type ErrorCode = (typeof ERROR_CODES)[keyof typeof ERROR_CODES]
 
 export type LimitSettings = Pick<Wallet, 'monthlyLimit' | 'warningThreshold'>
 export type WalletLimit = Pick<Wallet, 'monthlyLimit' | 'monthlyExpenses' | 'warningThreshold'>
 
 export interface WalletMember {
-  id: string
+  id: number
   displayName: string
   email: string
   role: WalletRole
 }
 
 export interface WalletInvitation {
-  id: string
+  id: number
   email: string
   role: AssignableRole
   createdAt: string
 }
 
 export interface Wallet {
-  id: string
+  id: number
   name: string
   role: WalletRole
   balance: number
@@ -33,8 +34,19 @@ export interface Wallet {
   invitations: WalletInvitation[]
 }
 
-export type LimitStatus = {
+export interface LimitStatus {
   state: LimitState
   percent: number
   overBy: number
+}
+
+export interface AuthUser {
+  id: number
+  displayName: string
+  email: string
+}
+
+export interface AuthResponse {
+  token: string
+  user: AuthUser
 }
