@@ -21,6 +21,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final WalletService walletService;
 
     @Transactional
     public AuthResponse register(RegisterRequest request) {
@@ -35,6 +36,8 @@ public class AuthService {
         user.setEmail(email);
         user.setPasswordHash(passwordEncoder.encode(request.password()));
         userRepository.save(user);
+
+        walletService.createWallet(user, "Mój portfel");
 
         return buildAuthResponse(user);
     }

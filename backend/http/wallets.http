@@ -1,0 +1,57 @@
+### 1. Rejestracja nowego konta
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{ "displayName": "Anna", "email": "anna@test.pl", "password": "haslo1234" }
+
+> {% client.global.set("token", response.body.token); %}
+
+### 1b. Logowanie
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{ "email": "anna2@test.pl", "password": "haslo1234" }
+
+> {% client.global.set("token", response.body.token); %}
+
+### 2. Moje portfele (po rejestracji: jeden "Mój portfel", role OWNER)
+GET http://localhost:8080/api/wallets
+Authorization: Bearer {{token}}
+
+### 3. Nowy portfel, oczekiwane 201
+POST http://localhost:8080/api/wallets
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "name": "Mieszkanie" }
+
+> {% client.global.set("walletId", response.body.id); %}
+
+### 4. Jeden portfel
+GET http://localhost:8080/api/wallets/{{walletId}}
+Authorization: Bearer {{token}}
+
+### 5. Zmiana nazwy
+PUT http://localhost:8080/api/wallets/{{walletId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "name": "Mieszkanie Krakowska 12" }
+
+### 6. Pusta nazwa, oczekiwane 400
+PUT http://localhost:8080/api/wallets/{{walletId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "name": "" }
+
+### 7. Usunięcie, oczekiwane 204
+DELETE http://localhost:8080/api/wallets/{{walletId}}
+Authorization: Bearer {{token}}
+
+### 8. Ten sam portfel po usunięciu, oczekiwane 404
+GET http://localhost:8080/api/wallets/{{walletId}}
+Authorization: Bearer {{token}}
+
+### 9. Bez tokena, oczekiwane 401
+GET http://localhost:8080/api/wallets
