@@ -22,7 +22,7 @@ public class JwtService {
 
     public String generateToken(Long userId) {
         Date now = new Date();
-        Date expiration = new Date(now.getTime() + expirationTime * 60 * 100);
+        Date expiration = new Date(now.getTime() + expirationTime * 60 * 1000);
 
         return Jwts.builder()
                 .subject(String.valueOf(userId))
