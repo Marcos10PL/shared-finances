@@ -25,6 +25,13 @@ export const LIMIT_STATES = {
   OVER: 'over'
 } as const
 
+export const LIMIT_STYLES = {
+  [LIMIT_STATES.NONE]: { bar: 'primary', label: '' },
+  [LIMIT_STATES.OK]: { bar: 'primary', label: 'text-muted' },
+  [LIMIT_STATES.WARNING]: { bar: 'warning', label: 'text-warning' },
+  [LIMIT_STATES.OVER]: { bar: 'error', label: 'text-error' }
+} as const
+
 export const ERROR_CODES = {
   // auth
   EMAIL_TAKEN: 'EMAIL_TAKEN',
@@ -82,6 +89,22 @@ export const CATEGORY_TYPE_GROUP_LABELS = {
   [CATEGORY_TYPES.INCOME]: 'Przychody'
 } as const
 
+export const TRANSACTION_SORTS = {
+  NEWEST: 'newest',
+  OLDEST: 'oldest',
+  AMOUNT_DESC: 'amountDesc',
+  AMOUNT_ASC: 'amountAsc'
+} as const
+
+export const TRANSACTION_SORT_LABELS = {
+  [TRANSACTION_SORTS.NEWEST]: 'Najnowsze',
+  [TRANSACTION_SORTS.OLDEST]: 'Najstarsze',
+  [TRANSACTION_SORTS.AMOUNT_DESC]: 'Kwota malejąco',
+  [TRANSACTION_SORTS.AMOUNT_ASC]: 'Kwota rosnąco'
+} as const
+
+export const TRANSACTIONS_PAGE_SIZE = 12
+
 // TODO: BACKEND CONFIRM
 export const VALIDATION = {
   DISPLAY_NAME_MAX_LENGTH: 50,
@@ -90,7 +113,10 @@ export const VALIDATION = {
   PASSWORD_MAX_LENGTH: 72,
   WALLET_NAME_MAX_LENGTH: 50,
   CATEGORY_NAME_MAX_LENGTH: 50,
+  TRANSACTION_NAME_MAX_LENGTH: 100,
+  TRANSACTION_DESCRIPTION_MAX_LENGTH: 500,
   AMOUNT_MAX: 9_999_999.99,
+  DATE_MIN: '2000-01-01',
   WARNING_THRESHOLD_MIN: 1,
   WARNING_THRESHOLD_MAX: 100
 } as const

@@ -42,20 +42,21 @@ const onDecline = () =>
 <template>
   <li class="flex flex-col gap-3 p-4 @xl:flex-row @xl:items-center @xl:gap-4">
     <div class="flex min-w-0 flex-1 items-center gap-3">
-      <UiUserAvatar :user-id="invitation.ownerId" :name="invitation.ownerName" size="md" />
+      <UiUser :user-id="invitation.ownerId" :name="invitation.ownerName" :truncate="false">
+        <template #name>
+          <span class="font-normal text-default">
+            <span class="font-medium text-highlighted">{{ invitation.ownerName }}</span>
+            zaprasza Cię do portfela „<span class="font-medium text-highlighted">{{
+              invitation.walletName
+            }}</span
+            >”
+          </span>
+        </template>
 
-      <div class="flex min-w-0 flex-col">
-        <p class="text-sm text-default">
-          <span class="font-medium text-highlighted">{{ invitation.ownerName }}</span>
-          zaprasza Cię do portfela „<span class="font-medium text-highlighted">{{
-            invitation.walletName
-          }}</span
-          >”
-        </p>
-        <span class="text-xs text-muted">
+        <template #description>
           {{ formatDate(invitation.createdAt) }} · Rola: {{ WALLET_ROLE_LABELS[invitation.role] }}
-        </span>
-      </div>
+        </template>
+      </UiUser>
     </div>
 
     <div class="grid grid-cols-2 gap-2 @xl:flex">

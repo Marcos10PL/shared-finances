@@ -3,6 +3,7 @@ import type {
   ERROR_CODES,
   INVITATION_ANSWERS,
   LIMIT_STATES,
+  TRANSACTION_SORTS,
   WALLET_ROLES
 } from '~/utils/const'
 
@@ -12,6 +13,7 @@ export type AssignableRole = typeof WALLET_ROLES.MEMBER | typeof WALLET_ROLES.GU
 export type ErrorCode = (typeof ERROR_CODES)[keyof typeof ERROR_CODES]
 export type CategoryType = (typeof CATEGORY_TYPES)[keyof typeof CATEGORY_TYPES]
 export type InvitationAnswer = (typeof INVITATION_ANSWERS)[keyof typeof INVITATION_ANSWERS]
+export type TransactionSort = (typeof TRANSACTION_SORTS)[keyof typeof TRANSACTION_SORTS]
 
 export type LimitSettings = Pick<Wallet, 'monthlyLimit' | 'warningThreshold'>
 export type WalletLimit = Pick<Wallet, 'monthlyLimit' | 'monthlyExpenses' | 'warningThreshold'>
@@ -76,4 +78,55 @@ export interface Category {
   type: CategoryType
   // null: a default category
   userId: number | null
+}
+
+export interface TransactionFilters {
+  type: CategoryType | null
+  categoryIds: number[]
+  authorIds: number[]
+}
+
+export interface Transaction {
+  id: number
+  name: string
+  description: string | null
+  type: CategoryType
+  amount: number
+  date: string
+  categoryId: number
+  authorId: number
+  createdAt: string
+}
+
+export interface TransactionQuery {
+  month: string
+  filters: TransactionFilters
+  sort: TransactionSort
+  page: number
+}
+
+export interface TransactionPage {
+  items: Transaction[]
+  total: number
+}
+
+export interface MemberContribution {
+  memberId: number
+  income: number
+  expenses: number
+}
+
+export interface CategoryShare {
+  id: number | null
+  name: string
+  amount: number
+  percent: number
+}
+
+export interface MonthSummary {
+  income: number
+  expenses: number
+  balance: number
+  contributions: MemberContribution[]
+  categories: CategoryShare[]
 }

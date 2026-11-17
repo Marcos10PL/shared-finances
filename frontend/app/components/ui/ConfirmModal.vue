@@ -38,7 +38,7 @@ const onSubmit = async () => {
     @update:open="(open) => !open && !loading && emit('close')"
   >
     <template #footer>
-      <div class="flex w-full justify-end gap-2">
+      <UiModalFooter>
         <UButton
           color="neutral"
           variant="outline"
@@ -47,7 +47,7 @@ const onSubmit = async () => {
           @click="emit('close')"
         />
         <UButton :color :label="confirmLabel" :loading @click="onSubmit" />
-      </div>
+      </UiModalFooter>
     </template>
   </UModal>
 </template>

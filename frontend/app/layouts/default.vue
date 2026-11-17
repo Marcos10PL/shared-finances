@@ -2,6 +2,7 @@
 const { user } = useAuth()
 const { fetchWallets, reset } = useWallets()
 const { reset: resetCategories } = useCategories()
+const { reset: resetTransactions } = useTransactions()
 const { fetchInvitations, reset: resetInvitations } = useInvitations()
 
 watch(
@@ -9,6 +10,7 @@ watch(
   (id) => {
     reset()
     resetCategories()
+    resetTransactions()
     resetInvitations()
 
     if (id) {

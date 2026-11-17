@@ -14,7 +14,7 @@ const { invitations, loaded } = useInvitations()
       class="m-auto"
     />
 
-    <div v-else class="@container flex w-full max-w-6xl flex-col gap-4">
+    <div v-else class="@container mx-auto flex w-full max-w-7xl flex-col gap-4">
       <UCard variant="flush">
         <ul v-if="!loaded" class="divide-y divide-default" aria-busy="true">
           <InvitationSkeleton v-for="index in 2" :key="index" />

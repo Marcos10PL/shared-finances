@@ -51,10 +51,10 @@ async function onSubmit(event: FormSubmitEvent<WalletInput>) {
     </template>
 
     <template #footer>
-      <div class="flex w-full justify-end gap-2">
+      <UiModalFooter>
         <UButton color="neutral" variant="outline" label="Anuluj" @click="emit('close', false)" />
         <UButton type="submit" form="new-wallet-form" label="Utwórz portfel" :loading />
-      </div>
+      </UiModalFooter>
     </template>
   </UModal>
 </template>

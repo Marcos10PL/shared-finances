@@ -7,13 +7,6 @@ const { limit } = defineProps<{
 
 const status = computed(() => getLimitStatus(limit))
 
-const LIMIT_STYLES = {
-  [LIMIT_STATES.NONE]: { bar: 'primary', label: '' },
-  [LIMIT_STATES.OK]: { bar: 'primary', label: 'text-muted' },
-  [LIMIT_STATES.WARNING]: { bar: 'warning', label: 'text-warning' },
-  [LIMIT_STATES.OVER]: { bar: 'error', label: 'text-error' }
-} as const
-
 const label = computed(() =>
   status.value.state === LIMIT_STATES.OVER
     ? `Przekroczono o ${formatCurrency(status.value.overBy)}`

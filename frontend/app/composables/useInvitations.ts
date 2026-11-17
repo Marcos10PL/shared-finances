@@ -30,6 +30,7 @@ export const useInvitations = () => {
 
   const count = computed(() => invitations.value.length)
 
+  // TODO: MOCK
   const fetchInvitations = async () => {
     await wait(300)
     invitations.value = mockInvitations()

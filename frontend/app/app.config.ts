@@ -15,7 +15,7 @@ export default defineAppConfig({
         base: 'cursor-pointer'
       },
       defaultVariants: {
-        size: 'md'
+        size: 'lg'
       },
       compoundVariants: [
         {
@@ -27,12 +27,28 @@ export default defineAppConfig({
           color: 'neutral',
           variant: ['ghost', 'outline'],
           class: 'hover:bg-(--hover-bg) active:bg-(--hover-bg)'
+        },
+        {
+          color: 'neutral',
+          variant: 'outline',
+          class: FIELD_BORDER
         }
       ]
     },
-    input: { variants: { variant: { outline: FIELD_BORDER } } },
-    inputNumber: { variants: { variant: { outline: FIELD_BORDER } } },
-    textarea: { variants: { variant: { outline: FIELD_BORDER } } },
+    input: { variants: { variant: { outline: FIELD_BORDER } }, defaultVariants: { size: 'lg' } },
+    inputNumber: {
+      variants: { variant: { outline: FIELD_BORDER } },
+      defaultVariants: { size: 'lg' }
+    },
+    inputDate: {
+      variants: { variant: { outline: FIELD_BORDER } },
+      defaultVariants: { size: 'lg' }
+    },
+    textarea: { variants: { variant: { outline: FIELD_BORDER } }, defaultVariants: { size: 'lg' } },
+    selectMenu: {
+      variants: { variant: { outline: FIELD_BORDER } },
+      defaultVariants: { size: 'lg' }
+    },
     dropdownMenu: {
       slots: {
         item: 'cursor-pointer'
@@ -42,7 +58,8 @@ export default defineAppConfig({
       slots: {
         item: 'cursor-pointer'
       },
-      variants: { variant: { outline: FIELD_BORDER } }
+      variants: { variant: { outline: FIELD_BORDER } },
+      defaultVariants: { size: 'lg' }
     },
     card: {
       slots: {
@@ -77,14 +94,15 @@ export default defineAppConfig({
       ]
     },
     tabs: {
+      defaultVariants: { size: 'lg' },
       compoundVariants: [
         {
           color: 'primary',
           variant: 'pill',
           class: {
-            list: 'p-0.5 px-1 bg-elevated dark:bg-default',
-            indicator: 'bg-default dark:bg-accented',
-            trigger: 'data-[state=active]:text-highlighted'
+            list: 'p-0.5 px-1 bg-default ring ring-default',
+            indicator: 'bg-elevated dark:bg-accented',
+            trigger: 'flex-1 data-[state=active]:text-highlighted'
           }
         }
       ]

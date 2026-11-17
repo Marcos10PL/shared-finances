@@ -61,7 +61,7 @@ async function onSubmit(event: FormSubmitEvent<CategoryNameInput>) {
     </template>
 
     <template #footer>
-      <div class="flex w-full justify-end gap-2">
+      <UiModalFooter>
         <UButton color="neutral" variant="outline" label="Anuluj" @click="emit('close')" />
         <UButton
           type="submit"
@@ -70,7 +70,7 @@ async function onSubmit(event: FormSubmitEvent<CategoryNameInput>) {
           :loading
           :disabled="!canSave"
         />
-      </div>
+      </UiModalFooter>
     </template>
   </UModal>
 </template>

@@ -102,17 +102,13 @@ const onLogout = async () => {
 
     <template #footer="{ collapsed }">
       <div class="flex w-full flex-col gap-1">
-        <UUser
+        <UiUser
           v-if="user && !collapsed"
+          :user-id="user.id"
           :name="user.displayName"
           :description="user.email"
-          :ui="{ name: 'text-sm font-medium text-highlighted', description: 'text-xs text-muted' }"
           class="px-2 py-1.5"
-        >
-          <template #avatar>
-            <UiUserAvatar :user-id="user.id" :name="user.displayName" />
-          </template>
-        </UUser>
+        />
 
         <div class="flex gap-1" :class="collapsed ? 'flex-col items-start' : 'items-center'">
           <UButton

@@ -40,7 +40,7 @@ const { openNewWallet } = useModals()
       v-else
       aria-label="Lista portfeli"
       :aria-busy="!loaded"
-      class="grid grid-cols-[repeat(auto-fill,minmax(22.5rem,1fr))] gap-4"
+      class="mx-auto grid w-full max-w-7xl grid-cols-[repeat(auto-fill,minmax(22.5rem,1fr))] gap-4"
     >
       <template v-if="loaded">
         <WalletCard v-for="(wallet, index) in wallets" :key="wallet.id" :wallet :index />

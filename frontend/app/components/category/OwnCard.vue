@@ -7,11 +7,6 @@ const { categories, loaded, addCategory, removeCategory } = useCategories()
 const { showSuccess, showError } = useToasts()
 const { confirm, openEditCategory } = useModals()
 
-const TYPE_TABS = Object.values(CATEGORY_TYPES).map((type) => ({
-  label: CATEGORY_TYPE_LABELS[type],
-  value: type
-}))
-
 const state = reactive<CategoryInput>({ name: '', type: CATEGORY_TYPES.EXPENSE })
 const adding = ref(false)
 const query = ref('')
@@ -77,7 +72,7 @@ const onRemove = (category: Category) =>
       class="border-t border-default bg-muted p-4"
       @submit="onAdd"
     >
-      <div class="flex flex-wrap items-start gap-2">
+      <div class="flex flex-wrap items-stretch gap-2">
         <UiInput
           v-model="state.name"
           name="name"
@@ -88,14 +83,7 @@ const onRemove = (category: Category) =>
           class="min-w-0 flex-1 basis-full"
         />
 
-        <UTabs
-          v-model="state.type"
-          :items="TYPE_TABS"
-          :content="false"
-          size="md"
-          class="min-w-0 flex-1"
-          aria-label="Typ kategorii"
-        />
+        <TypeTabs v-model="state.type" class="min-w-0 flex-1" aria-label="Typ kategorii" />
 
         <UButton
           type="submit"
@@ -122,8 +110,8 @@ const onRemove = (category: Category) =>
       <li v-for="index in 4" :key="index" class="flex items-center gap-3 px-4 py-3">
         <USkeleton class="size-8 shrink-0 rounded-md" />
 
-        <div class="flex flex-1 flex-col">
-          <USkeleton class="h-5 w-32" />
+        <div class="flex flex-1 flex-col gap-0.5">
+          <USkeleton class="h-4.5 w-32" />
           <USkeleton class="h-4 w-16" />
         </div>
       </li>
