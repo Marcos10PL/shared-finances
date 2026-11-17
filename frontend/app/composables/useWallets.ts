@@ -4,6 +4,10 @@ import type { AssignableRole, ErrorCode, LimitSettings, Wallet } from '~/types'
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 // TODO: MOCK
+const mockApiError = (code: ErrorCode) =>
+  Object.assign(new Error(code), { data: { message: code } })
+
+// TODO: MOCK
 const KNOWN_EMAILS = [
   'marcin.wojcik@example.com',
   'szymon.nowak@example.com',
@@ -13,10 +17,6 @@ const KNOWN_EMAILS = [
   'jan.lis@example.com',
   'ewa.mazur@example.com'
 ]
-
-// TODO: MOCK
-const mockApiError = (code: ErrorCode) =>
-  Object.assign(new Error(code), { data: { message: code } })
 
 export const useWallets = () => {
   const api = useApi()

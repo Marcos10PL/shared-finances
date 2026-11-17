@@ -1,3 +1,5 @@
+const FIELD_BORDER = 'ring-default dark:ring-accented'
+
 export default defineAppConfig({
   ui: {
     colors: {
@@ -28,6 +30,9 @@ export default defineAppConfig({
         }
       ]
     },
+    input: { variants: { variant: { outline: FIELD_BORDER } } },
+    inputNumber: { variants: { variant: { outline: FIELD_BORDER } } },
+    textarea: { variants: { variant: { outline: FIELD_BORDER } } },
     dropdownMenu: {
       slots: {
         item: 'cursor-pointer'
@@ -36,7 +41,8 @@ export default defineAppConfig({
     select: {
       slots: {
         item: 'cursor-pointer'
-      }
+      },
+      variants: { variant: { outline: FIELD_BORDER } }
     },
     card: {
       slots: {
@@ -68,6 +74,19 @@ export default defineAppConfig({
       compoundVariants: [
         { size: ['sm', 'md'], class: 'rounded-full px-2.5 py-0.5' },
         { size: 'sm', class: 'text-[0.7rem]' }
+      ]
+    },
+    tabs: {
+      compoundVariants: [
+        {
+          color: 'primary',
+          variant: 'pill',
+          class: {
+            list: 'p-0.5 px-1 bg-elevated dark:bg-default',
+            indicator: 'bg-default dark:bg-accented',
+            trigger: 'data-[state=active]:text-highlighted'
+          }
+        }
       ]
     },
     formField: {

@@ -24,7 +24,7 @@ watchEffect(() => {
 
 <template>
   <AppPage title="Ustawienia" :breadcrumb>
-    <div v-if="wallet?.role === WALLET_ROLES.OWNER" class="flex w-full max-w-5xl flex-col">
+    <div v-if="wallet?.role === WALLET_ROLES.OWNER" class="flex w-full max-w-6xl flex-col">
       <WalletSettingsSection title="Ogólne" description="Nazwa widoczna dla wszystkich członków.">
         <WalletSettingsNameForm :wallet />
       </WalletSettingsSection>

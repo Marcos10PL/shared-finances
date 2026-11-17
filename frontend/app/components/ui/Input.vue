@@ -2,6 +2,8 @@
 import type { InputProps } from '@nuxt/ui'
 
 const {
+  label = undefined,
+  ariaLabel = undefined,
   type = 'text',
   size = 'md',
   placeholder = '',
@@ -11,7 +13,8 @@ const {
   required = false
 } = defineProps<{
   name: string
-  label: string
+  label?: string
+  ariaLabel?: string
   type?: InputProps['type']
   size?: InputProps['size']
   placeholder?: string
@@ -31,6 +34,7 @@ const showPassword = ref(false)
       v-model="model"
       :type="type === 'password' && showPassword ? 'text' : type"
       :placeholder
+      :aria-label
       :autocomplete
       :maxlength="maxLength"
       :size

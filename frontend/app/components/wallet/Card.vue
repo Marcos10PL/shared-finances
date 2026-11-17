@@ -79,7 +79,6 @@ const onLeave = () =>
         label="Ustawienia"
         color="neutral"
         variant="ghost"
-        size="sm"
         class="relative text-muted"
       />
       <UButton
@@ -88,7 +87,6 @@ const onLeave = () =>
         label="Opuść portfel"
         color="neutral"
         variant="ghost"
-        size="sm"
         class="relative text-muted"
         @click="onLeave"
       />
