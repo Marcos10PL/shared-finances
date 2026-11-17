@@ -61,6 +61,11 @@ export const WALLET_ROLE_LABELS = {
   [WALLET_ROLES.GUEST]: 'Gość'
 } as const
 
+export const INVITATION_ANSWERS = {
+  ACCEPT: 'accept',
+  DECLINE: 'decline'
+} as const
+
 // TODO: BACKEND CONFIRM
 export const CATEGORY_TYPES = {
   EXPENSE: 'EXPENSE',

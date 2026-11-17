@@ -135,7 +135,7 @@ const onCancelInvite = () => {
           v-for="invitation in invitations"
           :key="invitation.id"
           :title="invitation.email"
-          :subtitle="`Zaproszona ${formatDate(invitation.createdAt)}`"
+          :subtitle="formatDate(invitation.createdAt)"
           :role="invitation.role"
           class="bg-muted"
         >

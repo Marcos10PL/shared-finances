@@ -1,10 +1,17 @@
-import type { CATEGORY_TYPES, ERROR_CODES, LIMIT_STATES, WALLET_ROLES } from '~/utils/const'
+import type {
+  CATEGORY_TYPES,
+  ERROR_CODES,
+  INVITATION_ANSWERS,
+  LIMIT_STATES,
+  WALLET_ROLES
+} from '~/utils/const'
 
 export type WalletRole = (typeof WALLET_ROLES)[keyof typeof WALLET_ROLES]
 export type LimitState = (typeof LIMIT_STATES)[keyof typeof LIMIT_STATES]
 export type AssignableRole = typeof WALLET_ROLES.MEMBER | typeof WALLET_ROLES.GUEST
 export type ErrorCode = (typeof ERROR_CODES)[keyof typeof ERROR_CODES]
 export type CategoryType = (typeof CATEGORY_TYPES)[keyof typeof CATEGORY_TYPES]
+export type InvitationAnswer = (typeof INVITATION_ANSWERS)[keyof typeof INVITATION_ANSWERS]
 
 export type LimitSettings = Pick<Wallet, 'monthlyLimit' | 'warningThreshold'>
 export type WalletLimit = Pick<Wallet, 'monthlyLimit' | 'monthlyExpenses' | 'warningThreshold'>
@@ -19,6 +26,17 @@ export interface WalletMember {
 export interface WalletInvitation {
   id: number
   email: string
+  role: AssignableRole
+  createdAt: string
+}
+
+export interface Invitation {
+  id: number
+  // TODO: BACKEND CONFIRM
+  ownerId: number
+  ownerName: string
+  walletId: number
+  walletName: string
   role: AssignableRole
   createdAt: string
 }

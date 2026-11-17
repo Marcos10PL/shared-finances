@@ -143,7 +143,7 @@ const onRemove = (category: Category) =>
             icon="i-lucide-pencil"
             color="neutral"
             variant="ghost"
-            size="md"
+            size="sm"
             class="text-muted"
             :aria-label="`Zmień nazwę: ${category.name}`"
             @click="openEditCategory(category)"
@@ -154,7 +154,7 @@ const onRemove = (category: Category) =>
             icon="i-lucide-trash-2"
             color="error"
             variant="ghost"
-            size="md"
+            size="sm"
             :aria-label="`Usuń kategorię: ${category.name}`"
             @click="onRemove(category)"
           />
