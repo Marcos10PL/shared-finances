@@ -1,0 +1,93 @@
+@baseUrl = http://localhost:8080
+@token = {{login.response.body.token}}
+
+### 1. Logowanie
+# @name login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{ "email": "anna@test.pl", "password": "haslo1234" }
+
+### 2. Nowa kategoria wydatku, oczekiwane 201
+POST {{baseUrl}}/api/categories
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "name": "Zwierzęta", "type": "EXPENSE" }
+
+### 3. Nowa kategoria przychodu, oczekiwane 201
+POST {{baseUrl}}/api/categories
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "name": "Zwrot podatku", "type": "INCOME" }
+
+### 4. Ta sama nazwa i typ jeszcze raz (wielkość liter bez znaczenia), oczekiwane 409
+POST {{baseUrl}}/api/categories
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "name": "zwierzęta", "type": "EXPENSE" }
+
+### 5. Pusta nazwa, oczekiwane 400
+POST {{baseUrl}}/api/categories
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "name": "", "type": "EXPENSE" }
+
+### 6. Brak typu, oczekiwane 400
+POST {{baseUrl}}/api/categories
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "name": "Hobby" }
+
+### 7. Bez tokena, oczekiwane 401
+POST {{baseUrl}}/api/categories
+Content-Type: application/json
+
+{ "name": "Hobby", "type": "EXPENSE" }
+
+### 8. Lista kategorii (domyślne + własne), oczekiwane 200
+# @name list
+GET {{baseUrl}}/api/categories
+Authorization: Bearer {{token}}
+
+### 9. Zmiana nazwy własnej kategorii, oczekiwane 200
+# Podmień 1 na id kategorii "Zwierzęta" z punktu 8
+PUT {{baseUrl}}/api/categories/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "name": "Zwierzaki" }
+
+### 10. Zmiana nazwy na już istniejącą (tego samego typu), oczekiwane 409
+PUT {{baseUrl}}/api/categories/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "name": "zwrot podatku" }
+
+### 11. Pusta nazwa przy edycji, oczekiwane 400
+PUT {{baseUrl}}/api/categories/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "name": "" }
+
+### 12. Edycja kategorii domyślnej, oczekiwane 403
+# Podmień 999 na id kategorii z userId = null
+PUT {{baseUrl}}/api/categories/999
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "name": "Inna nazwa" }
+
+### 13. Usunięcie własnej kategorii, oczekiwane 204
+DELETE {{baseUrl}}/api/categories/1
+Authorization: Bearer {{token}}
+
+### 14. Usunięcie nieistniejącej kategorii, oczekiwane 404
+DELETE {{baseUrl}}/api/categories/1
+Authorization: Bearer {{token}}
