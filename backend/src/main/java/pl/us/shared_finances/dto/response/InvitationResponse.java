@@ -8,7 +8,8 @@ public record InvitationResponse(
         Long id,
         Long walletId,
         String walletName,
-        String ownerName, // kto zaprasza
+        Long ownerId,     // kto zaprasza
+        String ownerName,
         String email,     // kogo zaproszono
         WalletRole role,
         LocalDateTime createdAt

@@ -94,6 +94,7 @@ public class WalletService {
 
     private WalletResponse toResponse(Wallet wallet, WalletRole myRole) {
         List<MemberResponse> members = new ArrayList<>();
+        Long ownerId = null;
         String ownerName = null;
 
         for (Membership membership : membershipRepository.findByWalletId(wallet.getId())) {
@@ -101,6 +102,7 @@ public class WalletService {
             members.add(new MemberResponse(user.getId(), user.getDisplayName(), user.getEmail(), membership.getRole()));
 
             if (membership.getRole() == WalletRole.OWNER) {
+                ownerId = user.getId();
                 ownerName = user.getDisplayName();
             }
         }
@@ -113,6 +115,7 @@ public class WalletService {
                         invitation.getId(),
                         wallet.getId(),
                         wallet.getName(),
+                        ownerId,
                         ownerName,
                         invitation.getInvitee().getEmail(),
                         invitation.getRole(),

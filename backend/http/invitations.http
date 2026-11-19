@@ -1,0 +1,142 @@
+### 1. Rejestracja Anny (od razu dostaje "Mój portfel")
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{ "displayName": "Anna", "email": "anna21@test.pl", "password": "haslo1234" }
+
+> {% client.global.set("annaToken", response.body.token); %}
+
+### 1b. Logowanie Anny (zamiast 1, gdy konto już istnieje)
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{ "email": "anna21@test.pl", "password": "haslo1234" }
+
+> {% client.global.set("annaToken", response.body.token); %}
+
+### 2. Rejestracja Bartka
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{ "displayName": "Bartek", "email": "bartek@test.pl", "password": "haslo1234" }
+
+> {% client.global.set("bartekToken", response.body.token);
+    client.global.set("bartekId", response.body.user.id); %}
+
+### 2b. Logowanie Bartka (zamiast 2, gdy konto już istnieje)
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{ "email": "bartek@test.pl", "password": "haslo1234" }
+
+> {% client.global.set("bartekToken", response.body.token);
+    client.global.set("bartekId", response.body.user.id); %}
+
+### 3. Nowy portfel Anny do testów
+POST http://localhost:8080/api/wallets
+Authorization: Bearer {{annaToken}}
+Content-Type: application/json
+
+{ "name": "Test zaproszeń" }
+
+> {% client.global.set("walletId", response.body.id); %}
+
+### 4. Anna zaprasza Bartka jako Członka, oczekiwane 201
+POST http://localhost:8080/api/wallets/{{walletId}}/invitations
+Authorization: Bearer {{annaToken}}
+Content-Type: application/json
+
+{ "email": "bartek@test.pl", "role": "MEMBER" }
+
+### 5. To samo drugi raz, oczekiwane 409 ALREADY_INVITED
+POST http://localhost:8080/api/wallets/{{walletId}}/invitations
+Authorization: Bearer {{annaToken}}
+Content-Type: application/json
+
+{ "email": "bartek@test.pl", "role": "MEMBER" }
+
+### 6. Anna zaprasza samą siebie, oczekiwane 400 SELF
+POST http://localhost:8080/api/wallets/{{walletId}}/invitations
+Authorization: Bearer {{annaToken}}
+Content-Type: application/json
+
+{ "email": "anna21@test.pl", "role": "MEMBER" }
+
+### 7. E-mail bez konta, oczekiwane 404 NO_ACCOUNT
+POST http://localhost:8080/api/wallets/{{walletId}}/invitations
+Authorization: Bearer {{annaToken}}
+Content-Type: application/json
+
+{ "email": "nikt@test.pl", "role": "MEMBER" }
+
+### 8. Zaproszenia Bartka (ownerName: "Anna")
+GET http://localhost:8080/api/invitations
+Authorization: Bearer {{bartekToken}}
+
+> {% client.global.set("invitationId", response.body[0].id); %}
+
+### 9. Bartek przyjmuje, oczekiwane 204
+POST http://localhost:8080/api/invitations/{{invitationId}}/accept
+Authorization: Bearer {{bartekToken}}
+
+### 10. Drugi raz, oczekiwane 409 INVITATION_ALREADY_ANSWERED
+POST http://localhost:8080/api/invitations/{{invitationId}}/accept
+Authorization: Bearer {{bartekToken}}
+
+### 11. Portfel z perspektywy Bartka: role MEMBER, 2 osoby w members, invitations []
+GET http://localhost:8080/api/wallets/{{walletId}}
+Authorization: Bearer {{bartekToken}}
+
+### 12. Bartek (Członek) próbuje kogoś zaprosić, oczekiwane 403 NOT_OWNER
+POST http://localhost:8080/api/wallets/{{walletId}}/invitations
+Authorization: Bearer {{bartekToken}}
+Content-Type: application/json
+
+{ "email": "anna@test.pl", "role": "GUEST" }
+
+### 13. Anna zmienia Bartkowi rolę na Gościa, oczekiwane 200
+PUT http://localhost:8080/api/wallets/{{walletId}}/members/{{bartekId}}/role
+Authorization: Bearer {{annaToken}}
+Content-Type: application/json
+
+{ "role": "GUEST" }
+
+### 14. Próba nadania roli OWNER, oczekiwane 400 INVALID_ROLE
+PUT http://localhost:8080/api/wallets/{{walletId}}/members/{{bartekId}}/role
+Authorization: Bearer {{annaToken}}
+Content-Type: application/json
+
+{ "role": "OWNER" }
+
+### 15. Anna próbuje opuścić własny portfel, oczekiwane 400 OWNER_CANNOT_LEAVE
+POST http://localhost:8080/api/wallets/{{walletId}}/leave
+Authorization: Bearer {{annaToken}}
+
+### 16. Bartek opuszcza portfel, oczekiwane 204
+POST http://localhost:8080/api/wallets/{{walletId}}/leave
+Authorization: Bearer {{bartekToken}}
+
+### 17. Bartek pyta o portfel po wyjściu, oczekiwane 404 WALLET_NOT_FOUND
+GET http://localhost:8080/api/wallets/{{walletId}}
+Authorization: Bearer {{bartekToken}}
+
+### 18. Anna zaprasza Bartka znowu (po wyjściu wolno), oczekiwane 201
+POST http://localhost:8080/api/wallets/{{walletId}}/invitations
+Authorization: Bearer {{annaToken}}
+Content-Type: application/json
+
+{ "email": "bartek@test.pl", "role": "GUEST" }
+
+### 19. Zaproszenia Bartka
+GET http://localhost:8080/api/invitations
+Authorization: Bearer {{bartekToken}}
+
+> {% client.global.set("invitationId", response.body[0].id); %}
+
+### 20. Bartek odrzuca, oczekiwane 204
+POST http://localhost:8080/api/invitations/{{invitationId}}/reject
+Authorization: Bearer {{bartekToken}}
+
+### 21. Anna usuwa portfel (kaskada usuwa członkostwa i zaproszenia), oczekiwane 204
+DELETE http://localhost:8080/api/wallets/{{walletId}}
+Authorization: Bearer {{annaToken}}
