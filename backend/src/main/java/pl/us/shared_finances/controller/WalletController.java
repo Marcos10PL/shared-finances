@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import pl.us.shared_finances.dto.request.WalletRequest;
+import pl.us.shared_finances.dto.request.WalletUpdateRequest;
 import pl.us.shared_finances.dto.response.WalletResponse;
 import pl.us.shared_finances.service.WalletService;
 
@@ -37,10 +38,10 @@ public class WalletController {
     }
 
     @PutMapping("/{walletId}")
-    public WalletResponse renameWallet(@PathVariable Long walletId,
+    public WalletResponse updateWallet(@PathVariable Long walletId,
                                        @AuthenticationPrincipal Long userId,
-                                       @Valid @RequestBody WalletRequest request) {
-        return walletService.renameWallet(walletId, userId, request);
+                                       @Valid @RequestBody WalletUpdateRequest request) {
+        return walletService.updateWallet(walletId, userId, request);
     }
 
     @DeleteMapping("/{walletId}")

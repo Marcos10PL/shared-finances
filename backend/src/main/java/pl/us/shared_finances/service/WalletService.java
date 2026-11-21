@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import pl.us.shared_finances.dto.request.WalletRequest;
+import pl.us.shared_finances.dto.request.WalletUpdateRequest;
 import pl.us.shared_finances.dto.response.InvitationResponse;
 import pl.us.shared_finances.dto.response.MemberResponse;
 import pl.us.shared_finances.dto.response.WalletResponse;
@@ -75,11 +76,14 @@ public class WalletService {
 
     // PUT /api/wallets/{walletId}
     @Transactional
-    public WalletResponse renameWallet(Long walletId, Long userId, WalletRequest request) {
+    public WalletResponse updateWallet(Long walletId, Long userId, WalletUpdateRequest request) {
         Membership membership = permissionService.requireOwner(walletId, userId);
 
         Wallet wallet = membership.getWallet();
         wallet.setName(request.name().trim());
+        wallet.setMonthlyLimit(request.monthlyLimit());
+        // próg bez limitu nie ma sensu
+        wallet.setWarningThreshold(request.monthlyLimit() == null ? null : request.warningThreshold());
         walletRepository.save(wallet);
 
         return toResponse(wallet, membership.getRole());

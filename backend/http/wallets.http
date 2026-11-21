@@ -1,57 +1,77 @@
+@baseUrl = http://localhost:8080
+
 ### 1. Rejestracja nowego konta
-POST http://localhost:8080/api/auth/register
+# @name register
+POST {{baseUrl}}/api/auth/register
 Content-Type: application/json
 
 { "displayName": "Anna", "email": "anna@test.pl", "password": "haslo1234" }
 
-> {% client.global.set("token", response.body.token); %}
-
 ### 1b. Logowanie
-POST http://localhost:8080/api/auth/login
+# @name login
+POST {{baseUrl}}/api/auth/login
 Content-Type: application/json
 
-{ "email": "anna2@test.pl", "password": "haslo1234" }
-
-> {% client.global.set("token", response.body.token); %}
+{ "email": "anna@test.pl", "password": "haslo1234" }
 
 ### 2. Moje portfele (po rejestracji: jeden "Mój portfel", role OWNER)
-GET http://localhost:8080/api/wallets
-Authorization: Bearer {{token}}
+GET {{baseUrl}}/api/wallets
+Authorization: Bearer {{login.response.body.token}}
 
 ### 3. Nowy portfel, oczekiwane 201
-POST http://localhost:8080/api/wallets
-Authorization: Bearer {{token}}
+# @name createWallet
+POST {{baseUrl}}/api/wallets
+Authorization: Bearer {{login.response.body.token}}
 Content-Type: application/json
 
 { "name": "Mieszkanie" }
 
-> {% client.global.set("walletId", response.body.id); %}
-
 ### 4. Jeden portfel
-GET http://localhost:8080/api/wallets/{{walletId}}
-Authorization: Bearer {{token}}
+GET {{baseUrl}}/api/wallets/{{createWallet.response.body.id}}
+Authorization: Bearer {{login.response.body.token}}
 
 ### 5. Zmiana nazwy
-PUT http://localhost:8080/api/wallets/{{walletId}}
-Authorization: Bearer {{token}}
+PUT {{baseUrl}}/api/wallets/{{createWallet.response.body.id}}
+Authorization: Bearer {{login.response.body.token}}
 Content-Type: application/json
 
 { "name": "Mieszkanie Krakowska 12" }
 
 ### 6. Pusta nazwa, oczekiwane 400
-PUT http://localhost:8080/api/wallets/{{walletId}}
-Authorization: Bearer {{token}}
+PUT {{baseUrl}}/api/wallets/{{createWallet.response.body.id}}
+Authorization: Bearer {{login.response.body.token}}
 Content-Type: application/json
 
 { "name": "" }
 
 ### 7. Usunięcie, oczekiwane 204
-DELETE http://localhost:8080/api/wallets/{{walletId}}
-Authorization: Bearer {{token}}
+DELETE {{baseUrl}}/api/wallets/{{createWallet.response.body.id}}
+Authorization: Bearer {{login.response.body.token}}
 
 ### 8. Ten sam portfel po usunięciu, oczekiwane 404
-GET http://localhost:8080/api/wallets/{{walletId}}
-Authorization: Bearer {{token}}
+GET {{baseUrl}}/api/wallets/{{createWallet.response.body.id}}
+Authorization: Bearer {{login.response.body.token}}
 
 ### 9. Bez tokena, oczekiwane 401
-GET http://localhost:8080/api/wallets
+GET {{baseUrl}}/api/wallets
+
+### 10. Ustawienie limitu i progu (PUT podmienia wszystkie pola: name + limit)
+PUT {{baseUrl}}/api/wallets/{{createWallet.response.body.id}}
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{ "name": "Mieszkanie", "monthlyLimit": 2500.00, "warningThreshold": 80 }
+
+### 11. Usunięcie limitu (próg też zostaje wyzerowany)
+PUT {{baseUrl}}/api/wallets/{{createWallet.response.body.id}}
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{ "name": "Mieszkanie", "monthlyLimit": null, "warningThreshold": null }
+
+### 12. Ujemny limit i próg > 100, oczekiwane 400
+PUT {{baseUrl}}/api/wallets/{{createWallet.response.body.id}}
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{ "name": "Mieszkanie", "monthlyLimit": -5, "warningThreshold": 150 }
