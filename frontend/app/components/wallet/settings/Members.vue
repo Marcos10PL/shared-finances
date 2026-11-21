@@ -30,7 +30,9 @@ const matches = (...values: string[]) =>
   values.some((value) => value.toLowerCase().includes(normalizedQuery.value))
 
 const members = computed(() =>
-  wallet.members.filter((member) => matches(member.displayName, member.email))
+  wallet.members
+    .filter((member) => matches(member.displayName, member.email))
+    .sort((a, b) => Number(b.role === WALLET_ROLES.OWNER) - Number(a.role === WALLET_ROLES.OWNER))
 )
 const invitations = computed(() => wallet.invitations.filter((item) => matches(item.email)))
 

@@ -1,59 +1,49 @@
 import type { Invitation } from '~/types'
 
-// TODO: MOCK
-const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
-
-const mockInvitations = (): Invitation[] => [
-  {
-    id: 1,
-    ownerId: 2,
-    ownerName: 'Szymon Nowak',
-    walletId: 11,
-    walletName: 'Wyjazd Zakopane 2027',
-    role: WALLET_ROLES.MEMBER,
-    createdAt: '2026-11-13T10:00:00Z'
-  },
-  {
-    id: 2,
-    ownerId: 3,
-    ownerName: 'Anna Kowalska',
-    walletId: 12,
-    walletName: 'Prezent dla mamy',
-    role: WALLET_ROLES.GUEST,
-    createdAt: '2026-11-11T10:00:00Z'
-  }
-]
-
 export const useInvitations = () => {
+  const api = useApi()
   const invitations = useState<Invitation[]>('invitations', () => [])
   const loaded = useState('invitations:loaded', () => false)
+  const error = useState('invitations:error', () => false)
 
   const count = computed(() => invitations.value.length)
 
-  // TODO: MOCK
   const fetchInvitations = async () => {
-    await wait(300)
-    invitations.value = mockInvitations()
-    loaded.value = true
+    error.value = false
+
+    try {
+      invitations.value = await api<Invitation[]>('/api/invitations')
+      loaded.value = true
+    } catch {
+      error.value = true
+    }
   }
 
-  // TODO: MOCK
-  const respond = async (id: number) => {
-    await wait(300)
+  const drop = (id: number) => {
     invitations.value = invitations.value.filter((invitation) => invitation.id !== id)
   }
 
-  const acceptInvitation = respond
-  const declineInvitation = respond
+  const acceptInvitation = async (id: number) => {
+    await api(`/api/invitations/${id}/accept`, { method: 'POST' })
+    drop(id)
+    await useWallets().fetchWallets()
+  }
+
+  const declineInvitation = async (id: number) => {
+    await api(`/api/invitations/${id}/reject`, { method: 'POST' })
+    drop(id)
+  }
 
   const reset = () => {
     invitations.value = []
     loaded.value = false
+    error.value = false
   }
 
   return {
     invitations,
     loaded,
+    error,
     count,
 
     fetchInvitations,

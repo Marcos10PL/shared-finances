@@ -7,7 +7,7 @@ const { wallet } = defineProps<{
   wallet: Wallet
 }>()
 
-const { setLimit } = useWallets()
+const { updateWallet } = useWallets()
 const { showSuccess, showError } = useToasts()
 const { confirm } = useModals()
 
@@ -56,7 +56,7 @@ const save = async (limit: LimitSettings) => {
   loading.value = true
 
   try {
-    await setLimit(wallet.id, limit)
+    await updateWallet(wallet.id, limit)
     showSuccess(limit.monthlyLimit === null ? 'Usunięto limit.' : 'Zapisano limit.')
   } catch {
     showError('Nie udało się zapisać limitu.')
@@ -99,7 +99,11 @@ const onCancel = () => {
             :increment="false"
             :decrement="false"
             locale="pl-PL"
-            :format-options="{ minimumFractionDigits: 2, useGrouping: 'always' }"
+            :format-options="{
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+              useGrouping: 'always'
+            }"
             class="w-full"
           />
         </UFormField>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Transaction } from '~/types'
 
-const { loaded: walletsLoaded } = useWallets()
+const { loaded: walletsLoaded, fetchWallets } = useWallets()
 const wallet = useCurrentWallet()
 const { categories, loaded: categoriesLoaded, fetchCategories } = useCategories()
 const {
@@ -15,6 +15,8 @@ const {
 const { user } = useAuth()
 const { openTransaction, confirm } = useModals()
 const { showSuccess, showError } = useToasts()
+
+useRefreshOnEnter(walletsLoaded, fetchWallets)
 
 const title = computed(() => wallet.value?.name ?? 'Portfel')
 const breadcrumb = computed(() => [{ label: 'Portfele', to: ROUTES.HOME }, { label: title.value }])

@@ -11,7 +11,15 @@ const state = reactive<CategoryInput>({ name: '', type: CATEGORY_TYPES.EXPENSE }
 const adding = ref(false)
 const query = ref('')
 
-const own = computed(() => categories.value.filter((category) => category.userId !== null))
+const own = computed(() =>
+  categories.value
+    .filter((category) => category.userId !== null)
+    .sort(
+      (a, b) =>
+        Number(b.type === CATEGORY_TYPES.EXPENSE) - Number(a.type === CATEGORY_TYPES.EXPENSE) ||
+        a.name.localeCompare(b.name, 'pl')
+    )
+)
 
 const normalizedQuery = computed(() => query.value.trim().toLowerCase())
 const visible = computed(() =>
@@ -27,8 +35,8 @@ async function onAdd(event: FormSubmitEvent<CategoryInput>) {
     await addCategory(event.data)
     state.name = ''
     showSuccess('Dodano kategorię.')
-  } catch {
-    showError('Nie udało się dodać kategorii.')
+  } catch (error) {
+    showError(getErrorMessage(error, CATEGORY_ERROR_MESSAGES, 'Nie udało się dodać kategorii.'))
   } finally {
     adding.value = false
   }
@@ -45,9 +53,7 @@ const onRemove = (category: Category) =>
         showSuccess('Usunięto kategorię.')
       } catch (error) {
         showError(
-          getApiErrorCode(error) === ERROR_CODES.CATEGORY_IN_USE
-            ? 'Kategoria ma przypisane transakcje.'
-            : 'Nie udało się usunąć kategorii.'
+          getErrorMessage(error, CATEGORY_ERROR_MESSAGES, 'Nie udało się usunąć kategorii.')
         )
       }
     }

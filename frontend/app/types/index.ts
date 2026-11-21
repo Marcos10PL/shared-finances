@@ -15,8 +15,11 @@ export type CategoryType = (typeof CATEGORY_TYPES)[keyof typeof CATEGORY_TYPES]
 export type InvitationAnswer = (typeof INVITATION_ANSWERS)[keyof typeof INVITATION_ANSWERS]
 export type TransactionSort = (typeof TRANSACTION_SORTS)[keyof typeof TRANSACTION_SORTS]
 
+export type ErrorMessages = Partial<Record<ErrorCode, string>>
 export type LimitSettings = Pick<Wallet, 'monthlyLimit' | 'warningThreshold'>
+export type WalletUpdate = Partial<Pick<Wallet, 'name' | 'monthlyLimit' | 'warningThreshold'>>
 export type WalletLimit = Pick<Wallet, 'monthlyLimit' | 'monthlyExpenses' | 'warningThreshold'>
+export type MonthTotals = Pick<MonthSummary, 'income' | 'expenses' | 'balance'>
 
 export interface WalletMember {
   id: number
@@ -34,7 +37,6 @@ export interface WalletInvitation {
 
 export interface Invitation {
   id: number
-  // TODO: BACKEND CONFIRM
   ownerId: number
   ownerName: string
   walletId: number

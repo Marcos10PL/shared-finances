@@ -29,8 +29,8 @@ async function onSubmit(event: FormSubmitEvent<CategoryNameInput>) {
     await renameCategory(category.id, event.data.name)
     showSuccess('Zapisano zmiany.')
     emit('close')
-  } catch {
-    showError('Nie udało się zapisać zmian.')
+  } catch (error) {
+    showError(getErrorMessage(error, CATEGORY_ERROR_MESSAGES, 'Nie udało się zapisać zmian.'))
     loading.value = false
   }
 }

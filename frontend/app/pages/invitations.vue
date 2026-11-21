@@ -1,13 +1,17 @@
 <script setup lang="ts">
 useHead({ title: 'Zaproszenia' })
 
-const { invitations, loaded } = useInvitations()
+const { invitations, loaded, error, fetchInvitations } = useInvitations()
+
+useRefreshOnEnter(loaded, fetchInvitations)
 </script>
 
 <template>
   <AppPage title="Zaproszenia">
+    <UiLoadError v-if="error" title="Nie udało się wczytać zaproszeń." @retry="fetchInvitations" />
+
     <UEmpty
-      v-if="loaded && invitations.length === 0"
+      v-else-if="loaded && invitations.length === 0"
       icon="i-lucide-mail"
       title="Nie masz jeszcze żadnych zaproszeń."
       description="Zaproszenia do portfeli pojawią się tutaj."

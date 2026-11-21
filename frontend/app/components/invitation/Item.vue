@@ -5,7 +5,7 @@ const { invitation } = defineProps<{
   invitation: Invitation
 }>()
 
-const { acceptInvitation, declineInvitation } = useInvitations()
+const { acceptInvitation, declineInvitation, fetchInvitations } = useInvitations()
 const { showSuccess, showError } = useToasts()
 
 const pending = ref<InvitationAnswer | null>(null)
@@ -20,9 +20,11 @@ const answer = async (
   try {
     await send(invitation.id)
     showSuccess(messages.success)
-  } catch {
-    showError(messages.failure)
+  } catch (error) {
+    showError(getErrorMessage(error, INVITATION_ERROR_MESSAGES, messages.failure))
     pending.value = null
+
+    if (getApiErrorCode(error)) fetchInvitations()
   }
 }
 

@@ -49,6 +49,13 @@ export default defineAppConfig({
       variants: { variant: { outline: FIELD_BORDER } },
       defaultVariants: { size: 'lg' }
     },
+    modal: {
+      slots: {
+        wrapper: 'min-w-0 flex-1',
+        title: 'wrap-break-word',
+        description: 'wrap-break-word'
+      }
+    },
     dropdownMenu: {
       slots: {
         item: 'cursor-pointer'

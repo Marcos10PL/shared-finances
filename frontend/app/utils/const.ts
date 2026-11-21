@@ -1,4 +1,4 @@
-import type { ErrorCode } from '~/types'
+import type { ErrorMessages } from '~/types'
 
 export const ROUTES = {
   HOME: '/',
@@ -42,24 +42,51 @@ export const ERROR_CODES = {
   WALLET_NOT_FOUND: 'WALLET_NOT_FOUND',
   NOT_OWNER: 'NOT_OWNER',
   GUEST_READ_ONLY: 'GUEST_READ_ONLY',
+  MEMBER_NOT_FOUND: 'MEMBER_NOT_FOUND',
+  OWNER_PROTECTED: 'OWNER_PROTECTED',
+  OWNER_CANNOT_LEAVE: 'OWNER_CANNOT_LEAVE',
 
-  // TODO: BACKEND CONFIRM
   // invitations
   NO_ACCOUNT: 'NO_ACCOUNT',
   ALREADY_MEMBER: 'ALREADY_MEMBER',
   ALREADY_INVITED: 'ALREADY_INVITED',
   SELF: 'SELF',
+  INVALID_ROLE: 'INVALID_ROLE',
+  INVITATION_NOT_FOUND: 'INVITATION_NOT_FOUND',
+  INVITATION_ALREADY_ANSWERED: 'INVITATION_ALREADY_ANSWERED',
 
-  // TODO: BACKEND CONFIRM
   // categories
+  CATEGORY_EXISTS: 'CATEGORY_EXISTS',
+  CATEGORY_NOT_FOUND: 'CATEGORY_NOT_FOUND',
+  DEFAULT_CATEGORY_READ_ONLY: 'DEFAULT_CATEGORY_READ_ONLY',
+  // TODO: BACKEND CONFIRM (waits for the transactions)
   CATEGORY_IN_USE: 'CATEGORY_IN_USE'
 } as const
 
-export const INVITE_ERROR_MESSAGES: Partial<Record<ErrorCode, string>> = {
+export const INVITE_ERROR_MESSAGES: ErrorMessages = {
   [ERROR_CODES.NO_ACCOUNT]: 'Nie znaleziono konta z tym adresem e-mail.',
   [ERROR_CODES.ALREADY_MEMBER]: 'Ta osoba jest już w tym portfelu.',
   [ERROR_CODES.ALREADY_INVITED]: 'Ta osoba ma już oczekujące zaproszenie.',
   [ERROR_CODES.SELF]: 'Nie możesz zaprosić samego siebie.'
+}
+
+export const INVITATION_ERROR_MESSAGES: ErrorMessages = {
+  // should not happen, unless answered in another tab
+  [ERROR_CODES.INVITATION_NOT_FOUND]: 'Nie znaleziono tego zaproszenia.',
+  [ERROR_CODES.INVITATION_ALREADY_ANSWERED]: 'To zaproszenie zostało już obsłużone.',
+  [ERROR_CODES.ALREADY_MEMBER]: 'Jesteś już w tym portfelu.'
+}
+
+export const MEMBER_ERROR_MESSAGES: ErrorMessages = {
+  // the first two should not happen, the interface hides them
+  [ERROR_CODES.OWNER_PROTECTED]: 'Nie można zmienić roli ani usunąć właściciela.',
+  [ERROR_CODES.OWNER_CANNOT_LEAVE]: 'Właściciel nie może opuścić portfela. Usuń portfel.',
+  [ERROR_CODES.MEMBER_NOT_FOUND]: 'Nie znaleziono tej osoby w portfelu.'
+}
+
+export const CATEGORY_ERROR_MESSAGES: ErrorMessages = {
+  [ERROR_CODES.CATEGORY_EXISTS]: 'Masz już kategorię o tej nazwie.',
+  [ERROR_CODES.CATEGORY_IN_USE]: 'Kategoria ma przypisane transakcje.'
 }
 
 export const WALLET_ROLE_LABELS = {
@@ -73,7 +100,6 @@ export const INVITATION_ANSWERS = {
   DECLINE: 'decline'
 } as const
 
-// TODO: BACKEND CONFIRM
 export const CATEGORY_TYPES = {
   EXPENSE: 'EXPENSE',
   INCOME: 'INCOME'

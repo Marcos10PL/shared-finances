@@ -3,6 +3,8 @@ useHead({ title: 'Portfele' })
 
 const { wallets, loaded, error, fetchWallets } = useWallets()
 const { openNewWallet } = useModals()
+
+useRefreshOnEnter(loaded, fetchWallets)
 </script>
 
 <template>
@@ -16,14 +18,7 @@ const { openNewWallet } = useModals()
       />
     </template>
 
-    <UEmpty
-      v-if="error"
-      icon="i-lucide-triangle-alert"
-      title="Nie udało się wczytać portfeli."
-      description="Sprawdź połączenie i spróbuj ponownie."
-      :actions="[{ label: 'Spróbuj ponownie', icon: 'i-lucide-refresh-cw', onClick: fetchWallets }]"
-      class="m-auto"
-    />
+    <UiLoadError v-if="error" title="Nie udało się wczytać portfeli." @retry="fetchWallets" />
 
     <UEmpty
       v-else-if="loaded && wallets.length === 0"

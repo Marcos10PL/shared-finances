@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { WalletLimit } from '~/types'
+import type { MonthTotals, WalletLimit } from '~/types'
 
 const {
   totals,
   limit = undefined,
   loading = false
 } = defineProps<{
-  totals: { balance: number; income: number; expenses: number }
+  totals: MonthTotals
   limit?: WalletLimit
   loading?: boolean
 }>()

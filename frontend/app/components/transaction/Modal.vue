@@ -131,7 +131,11 @@ async function onSubmit(event: FormSubmitEvent<TransactionInput>) {
               :increment="false"
               :decrement="false"
               locale="pl-PL"
-              :format-options="{ minimumFractionDigits: 2, useGrouping: 'always' }"
+              :format-options="{
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+                useGrouping: 'always'
+              }"
               size="xl"
               class="w-full"
               :ui="{ base: 'py-3 text-2xl font-semibold' }"

@@ -23,8 +23,8 @@ const onLeave = () =>
       try {
         await leaveWallet(wallet.id)
         showSuccess('Opuszczono portfel.')
-      } catch {
-        showError('Nie udało się opuścić portfela.')
+      } catch (error) {
+        showError(getErrorMessage(error, MEMBER_ERROR_MESSAGES, 'Nie udało się opuścić portfela.'))
       }
     }
   })

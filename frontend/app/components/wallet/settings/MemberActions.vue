@@ -17,8 +17,8 @@ const onChangeRole = async (role: AssignableRole) => {
   try {
     await changeMemberRole(wallet.id, member.id, role)
     showSuccess('Zmieniono rolę.')
-  } catch {
-    showError('Nie udało się zmienić roli.')
+  } catch (error) {
+    showError(getErrorMessage(error, MEMBER_ERROR_MESSAGES, 'Nie udało się zmienić roli.'))
   }
 }
 
@@ -31,8 +31,10 @@ const onRemove = () =>
       try {
         await removeMember(wallet.id, member.id)
         showSuccess('Usunięto osobę z portfela.')
-      } catch {
-        showError('Nie udało się usunąć osoby z portfela.')
+      } catch (error) {
+        showError(
+          getErrorMessage(error, MEMBER_ERROR_MESSAGES, 'Nie udało się usunąć osoby z portfela.')
+        )
       }
     }
   })

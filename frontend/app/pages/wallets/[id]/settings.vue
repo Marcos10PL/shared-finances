@@ -1,8 +1,10 @@
 <script setup lang="ts">
 useHead({ title: 'Ustawienia portfela' })
 
-const { loaded } = useWallets()
+const { loaded, fetchWallets } = useWallets()
 const wallet = useCurrentWallet()
+
+useRefreshOnEnter(loaded, fetchWallets)
 
 const breadcrumb = computed(() =>
   wallet.value
